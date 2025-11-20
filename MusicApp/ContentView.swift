@@ -8,14 +8,41 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var albums: [Album] = []
+    @State private var searchText = "Massive Shoe"
+    
+    private let albumService = AlbumService()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List(albums) { album in
+                VStack(alignment: .leading) {
+                    Text(album.name)
+                    Text(album.artist)
+                }
+            }
         }
-        .padding()
+        .searchable(text: $searchText)
+        .onSubmit(of: .search) {
+            performSearch()
+        }
+        .task {
+            performSearch()
+        }
+    }
+    
+    func performSearch() {
+        Task {
+            do {
+                let results = try await albumService.searchForAlbums(search: searchText)
+                
+                await MainActor.run {
+                    self.albums = results
+                }
+            } catch {
+                print("Error fetching albums")
+            }
+        }
     }
 }
 
