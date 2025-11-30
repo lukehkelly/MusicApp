@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SearchView: View {
+    @EnvironmentObject var dataManager: DataManager
+    
     @State private var albums: [Album] = []
     @State private var searchText = ""
     
@@ -19,8 +21,22 @@ struct SearchView: View {
                 Text(album.name)
                 Text(album.artist)
             }
+            .swipeActions(edge: .leading) {
+                Button {
+                    dataManager.addToLogged(album)
+                } label: {
+                    Label("Log", systemImage: "checkmark" )
+                }
+                .tint(.green)
+                Button {
+                    dataManager.addToListenLater(album)
+                } label: {
+                    Label("Listen Later", systemImage: "clock" )
+                }
+                .tint(.orange)
+            }
         }
-    
+        
         .searchable(text: $searchText)
         .onSubmit(of: .search) {
             performSearch()

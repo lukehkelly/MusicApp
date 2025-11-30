@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct RecommendationView: View {
+    @EnvironmentObject var dataManager: DataManager
+    
     let genres = ["rock", "pop", "alternative", "indie", "electronic", "dance", "00s", "jazz", "singer-songwriter", "metal", "soul", "80s", "folk", "british", "90s", "american", "instrumental", "punk", "blues", "rap", "hip-hop", "country", "70s", "funk", "60s", "rnb", "house", "reggae"].sorted()
     
     @State private var selectedGenre = "rock"
@@ -72,6 +74,20 @@ struct RecommendationView: View {
                         Text(album.artist)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+                    }
+                    .swipeActions(edge: .leading) {
+                        Button {
+                            dataManager.addToLogged(album)
+                        } label: {
+                            Label("Log", systemImage: "checkmark" )
+                        }
+                        .tint(.green)
+                        Button {
+                            dataManager.addToListenLater(album)
+                        } label: {
+                            Label("Listen Later", systemImage: "clock" )
+                        }
+                        .tint(.orange)
                     }
                 }
                 .listStyle(.plain)

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MainMenuView: View {
+    @EnvironmentObject var dataManager: DataManager
+    
     var body: some View {
         
         NavigationStack {
@@ -30,11 +32,40 @@ struct MainMenuView: View {
                         Text("Recommendations")
                     }
                 }
+                Divider().padding(.vertical)
+                
+                // Logged albums
+                NavigationLink(destination: AlbumListView(title: "Logged Albums", albums: dataManager.loggedAlbums)) {
+                    MenuButton(title: "Logged Albums", color: .green)
+                }
+                
+                // Listen later
+                NavigationLink(destination: AlbumListView(title: "Listen Later", albums: dataManager.listenLaterAlbums)) {
+                    MenuButton(title: "Listen Later", color: .orange)
+                }
             }
+        }
+    }
+}
+
+struct MenuButton: View {
+    let title: String
+    let color: Color
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.headline)
+                .frame(maxWidth: 300)
+                .padding()
+                .background(color)
+                .foregroundColor(.white)
+                .cornerRadius(10)
         }
     }
 }
 
 #Preview {
     MainMenuView()
+        .environmentObject(DataManager())
 }
