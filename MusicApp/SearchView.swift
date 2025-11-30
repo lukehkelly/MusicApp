@@ -7,21 +7,20 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct SearchView: View {
     @State private var albums: [Album] = []
-    @State private var searchText = "Massive Shoe"
+    @State private var searchText = ""
     
     private let albumService = AlbumService()
     
     var body: some View {
-        NavigationStack {
-            List(albums) { album in
-                VStack(alignment: .leading) {
-                    Text(album.name)
-                    Text(album.artist)
-                }
+        List(albums) { album in
+            VStack(alignment: .leading) {
+                Text(album.name)
+                Text(album.artist)
             }
         }
+    
         .searchable(text: $searchText)
         .onSubmit(of: .search) {
             performSearch()
@@ -29,6 +28,7 @@ struct ContentView: View {
         .task {
             performSearch()
         }
+        .navigationTitle("Album Search")
     }
     
     func performSearch() {
@@ -46,6 +46,3 @@ struct ContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
-}

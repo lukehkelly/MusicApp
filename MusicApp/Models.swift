@@ -18,6 +18,23 @@ struct Album: Decodable, Identifiable {
         case artist
         case url
     }
+    struct ArtistObject: Decodable {
+            let name: String
+        }
+        
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.name = try container.decode(String.self, forKey: .name)
+        self.url = try container.decode(String.self, forKey: .url)
+        
+        if let artistString = try? container.decode(String.self, forKey: .artist) {
+            self.artist = artistString
+        } else {
+            let artistObject = try container.decode(ArtistObject.self, forKey: .artist)
+            self.artist = artistObject.name
+        }
+    }
 }
 
 struct AlbumMatches: Decodable {
@@ -38,4 +55,12 @@ struct SearchResults: Decodable {
 
 struct AlbumSearchResponse: Decodable {
     let results: SearchResults
+}
+
+struct TagTopAlbumSearchResponse: Decodable {
+    let albums: AlbumMatches
+    
+    enum CodingKeys: String, CodingKey {
+        case albums = "albums"
+    }
 }
