@@ -18,5 +18,8 @@ Future improvements:
 
 <img width="314" height="649" alt="Screenshot 2025-12-01 at 8 06 13 PM" src="https://github.com/user-attachments/assets/55db7278-0e40-4c39-a704-ed319344cee4" />
 
+<img width="314" height="649" alt="Screenshot 2025-12-01 at 8 09 17 PM" src="https://github.com/user-attachments/assets/cd19c7d9-2b17-44ab-b78d-903c59c040a4" />
+
+
 The most difficult part of this app was creating the search and getTopAlbums functionality. Building the API request and then decoding
 was very tricky, and it took me a while to figure out how to properly display the albums in a list format.
