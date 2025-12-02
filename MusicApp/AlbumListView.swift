@@ -9,17 +9,20 @@ import SwiftUI
 
 struct AlbumListView: View {
     let title: String
-    let albums: [Album]
+    @Binding var albums: [Album]
     
     var body: some View {
-        List(albums) { album in
-            VStack(alignment: .leading) {
-                Text(album.name)
-                    .font(.headline)
-                Text(album.artist)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+        List {
+            ForEach(albums) { album in
+                VStack(alignment: .leading) {
+                    Text(album.name)
+                        .font(.headline)
+                    Text(album.artist)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
             }
+            .onDelete(perform: deleteAlbum)
         }
         .navigationTitle(title)
         .overlay {
@@ -30,5 +33,9 @@ struct AlbumListView: View {
                     description: Text("Go to Search or Recommendations to add an album"))
             }
         }
+    }
+    
+    func deleteAlbum(at offsets: IndexSet) {
+        albums.remove(atOffsets: offsets)
     }
 }
